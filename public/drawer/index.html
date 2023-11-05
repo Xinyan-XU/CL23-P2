@@ -1,31 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>DRAWER</title>
 </head>
+
 <body>
     <h1>Ready to Draw?</h1>
-<div>
-    <div id="drawing_section">
-        <button id="get_words">start</button>
-        <div id="drawing_word"></div>
-        <div id="drawing_canvas"></div>
+    <div>
+        <div>
+            <button id="get_words">GET WORDS</button>
+            <div id="drawing_word"></div>
+            <div class="hidden" id="get_color">
+                <div id="color_section">
+                    <p>pick your drawing color: </p>
+                    <div id="color_picker"></div>
+                    <button id="eraser">eraser</button>
+                </div>
+            </div>
+            <div>
+                <button class="hidden" id="start">START</button>
+            </div>
+            <div id="drawing_section">
+                <div class="hidden" id="drawing_canvas"></div>
+            </div>
+        </div>
+        <div id="chat_section">
+            <div id="chat_box"></div>
+        </div>
     </div>
-    <div id="chat_section">
-        <div id="chat_box"></div>
-    </div>
-</div>
 
-<div>
-    <button id="back2_main">Home Page</button>
-</div>
+    <div>
+        <button id="back2_main">HOME PAGE</button>
+    </div>
 
     <script src="app.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script> -->
 </body>
+
 </html>
