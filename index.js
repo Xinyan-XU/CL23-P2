@@ -22,10 +22,19 @@ let words = [
   { word: "whale" },
 ]
 
+io.on("connection",(socket)=>{
+  console.log("main page socket connected");
+
+  socket.on('drawButtonClicked',()=>{
+    io.emit('drawButtonDisable');
+  })
+})
+
 let drawer = io.of('/drawer');
 let respondent = io.of('/respondent');
 let num = 0;
 
+////////////////////-----drawer page-----////////////////////
 drawer.on("connection", (socket) => {
   console.log("drawer socket connected: " + socket.id);
 
@@ -53,6 +62,8 @@ drawer.on("connection", (socket) => {
 
 })
 
+
+////////////////////-----respondent page-----////////////////////
 respondent.on("connection", (socket) => {
   console.log("chatroom socket connected: " + socket.id);
 })
