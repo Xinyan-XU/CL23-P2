@@ -17,15 +17,32 @@ let io = require("socket.io");
 io = new io.Server(server);
 
 let words = [
-  { word: "umbrella" },
-  { word: "key" },
-  { word: "whale" },
+  { word: "Break the Ice" },
+  { word: "Hit the Hay" },
+  { word: "Piece of Cake" },
+  { word: "Time Files" },
+  { word: "Under the Weather" },
+  { word: "Bite the Bullet" },
+  { word: "Butterfilies in My Stomach" },
+  { word: "Get Cold Feet" },
+  { word: "Hold Your Horses" },
+  { word: "In the Dog House" },
+  { word: "Cost an Arm and a Leg" },
+  { word: "Cry Over Spilled Milk" },
+  { word: "Don't Count Your Chickens Before They Hatch" },
+  { word: "Fish Out of Water" },
+  { word: "Let the Cat Out of the Bag" },
+  { word: "Time Files" },
+  { word: "Under the Weather" },
+  { word: "Bite the Bullet" },
+  { word: "Rain Cats and Dogs" },
+  { word: "The Apple of My Eye" },
 ]
 
-io.on("connection",(socket)=>{
+io.on("connection", (socket) => {
   console.log("main page socket connected");
 
-  socket.on('drawButtonClicked',()=>{
+  socket.on('drawButtonClicked', () => {
     io.emit('drawButtonDisable');
   })
 })
@@ -33,19 +50,25 @@ io.on("connection",(socket)=>{
 let drawer = io.of('/drawer');
 let respondent = io.of('/respondent');
 let num = 0;
+let chatPPL = 0;
+let drawPPL = 0;
 
 ////////////////////-----drawer page-----////////////////////
 drawer.on("connection", (socket) => {
+  drawPPL++;
   console.log("drawer socket connected: " + socket.id);
+  updatePPL();
 
   socket.on('getword', () => {
     num = Math.floor(Math.random() * words.length);
+
     //server send draw word to drawer
     let drawData = { word: words[num].word }
     drawer.emit('word', drawData);
 
     //server send draw word length to respondent
-    let resData = { wordlength: words[num].word.length }
+    let wordCount = words[num].word.split(' ').length;
+    let resData = { wordlength: wordCount }
     respondent.emit('wordlength', resData);
   })
 
@@ -60,10 +83,35 @@ drawer.on("connection", (socket) => {
     respondent.emit('clear', clear);
   })
 
+  socket.on("disconnect", () => {
+    drawPPL--;
+    updatePPL();
+  })
 })
-
 
 ////////////////////-----respondent page-----////////////////////
 respondent.on("connection", (socket) => {
   console.log("chatroom socket connected: " + socket.id);
+  chatPPL++
+  updatePPL();
+
+  socket.on("msg", function (data) {
+    console.log("Received a 'msg' event");
+    console.log(data);
+    
+    respondent.emit("msg", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("chatroom socket disconneted: " + socket.id);
+    chatPPL--;
+    updatePPL();
+  })
 })
+
+function updatePPL() {
+  let userCount = { drawPPL, chatPPL };
+  let count = JSON.stringify(userCount);
+  io.emit('userCounts', count);
+  console.log(count);
+}

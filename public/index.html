@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Pictionary</title>
+    <title>PICTIONARY</title>
 </head>
+
 <body>
     <h1>WELCOME!!</h1>
-<div id="start_page">
-    <div id="drawing_section">
-        <button id="drawer" onclick="drawerButton(click)">I AM AN ARTIST</button>
+    <div id="start_page">
+        <div id="drawing_section">
+            <button id="drawer">I AM AN ARTIST</button>
+        </div>
+        <div id="chat_section">
+            <button id="chatroom">I AM A GOOD GUESSER</button>
+        </div>
     </div>
-    <div id="chat_section">
-        <button id="chatroom">I AM A GOOD GUESSER</button>
-    </div>
-</div>
+    <div id="reminder">PLAY WITH YOUR FRIENDS!</div>
 
     <script src="app.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script> -->
 </body>
+
 </html>

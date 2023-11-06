@@ -5,32 +5,29 @@ window.addEventListener('load', () => {
     document.getElementById('back2_main').addEventListener('click', () => {
         window.location.href = '/';
     })
-
-    document.getElementById('get_words').addEventListener('click', () => {
+    let getWords = document.getElementById('get_words');
+    getWords.addEventListener('click', () => {
         let start = document.getElementById('start');
         let startText = document.getElementById('start_word');
         start.classList.remove('hidden');
         startText.classList.remove('hidden');
+        getWords.innerHTML = "CHANGE WORDS";
+        start.innerText = 'START';
+
         socket.emit('getword');
     })
 
     let word = document.getElementById('drawing_word');
     socket.on('word', (drawData) => {
         //console.log(drawData);
-        word.innerText = "The word to draw is: " + drawData.word;
+        word.innerText = "The words to draw is: " + drawData.word;
     })
 
-    // let start = document.getElementById('start');
-    // start.addEventListener('click', () => {
-    //     socket.emit('clear_canvas');
-    // })
-
-    // socket.on('clear', () => {
-    //     clear();
-    // })
-
+    let chatPPL = document.getElementById('chatPPL_num');
+    socket.on('userCounts', (userCount) => {
+        chatPPL.innerText = "Guesser: " + userCount.chatPPL;
+    })
 })
-
 
 ////////////////////-----p5.js-----////////////////////
 let socket;
