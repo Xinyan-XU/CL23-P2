@@ -6,27 +6,28 @@ window.addEventListener('load', () => {
         window.location.href = '/';
     })
 
-    let start = document.getElementById('start');
-    let canvas = document.getElementById('drawing_canvas');
-    let color = document.getElementById('get_color');
-
     document.getElementById('get_words').addEventListener('click', () => {
+        let start = document.getElementById('start');
+        let startText = document.getElementById('start_word');
         start.classList.remove('hidden');
+        startText.classList.remove('hidden');
         socket.emit('getword');
     })
 
     let word = document.getElementById('drawing_word');
     socket.on('word', (drawData) => {
-        console.log(drawData);
+        //console.log(drawData);
         word.innerText = "The word to draw is: " + drawData.word;
-        color.classList.remove('hidden');
     })
 
-    start.addEventListener('click', () => {
-        canvas.classList.remove('hidden');
-        start.innerText = 'Clear Canvas';
-        clear();
-    })
+    // let start = document.getElementById('start');
+    // start.addEventListener('click', () => {
+    //     socket.emit('clear_canvas');
+    // })
+
+    // socket.on('clear', () => {
+    //     clear();
+    // })
 
 })
 
@@ -35,6 +36,7 @@ window.addEventListener('load', () => {
 let socket;
 let p5ColorPicker;
 let eraser;
+let buttonClicked = true;
 
 function setup() {
     socket = io('/drawer');
@@ -60,21 +62,45 @@ function setup() {
             eraserButton.innerText = 'Eraser';
         }
     })
+
+    let start = document.getElementById('start');
+    let startText = document.getElementById('start_word');
+    start.addEventListener('click', () => {
+        buttonClicked = true;
+        socket.emit('clear_canvas');
+        start.innerText = 'CLEAR';
+        startText.innerText = ' 👈🏼 click to clear the canvas'
+    })
+
+    socket.on('clear', () => {
+        clear();
+    })
 }
 
 function mouseDragged() {
-    let mousePos = { x: mouseX, y: mouseY };
-    socket.emit('draw', mousePos);
+    if (buttonClicked) {
+        let mousePos = { x: mouseX, y: mouseY };
+        let fillColor, ellipseSize;
+        if (!eraser) {
+            fillColor = p5ColorPicker.value();
+            ellipseSize = 10;
+        } else {
+            fillColor = '#ffffff';
+            ellipseSize = 30;
+        }
+        socket.emit('draw', { pos: mousePos, fill: fillColor, size: ellipseSize });
+    }
 }
 
-function drawPos(pos) {
-    if (!eraser) {
-        fill(p5ColorPicker.color());
-        ellipse(pos.x, pos.y, 10, 10);
-    } else {
-        fill('#ffffff');
-        ellipse(pos.x, pos.y, 30, 30);
-    }
+function drawPos(data) {
+    let pos = data.pos;
+    let color = data.fill;
+    let size = data.size;
+
+    console.log(color);
+
     noStroke();
+    fill(color);
+    ellipse(pos.x, pos.y, size, size);
 }
 

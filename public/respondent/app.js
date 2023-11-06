@@ -8,35 +8,44 @@ window.addEventListener('load', () => {
 
     let hint = document.getElementById('word_hint')
     socket.on('wordlength', (resData) => {
-        console.log(resData);
+        //console.log(resData);
+        hint.innerText = "hint:" + " " + "number of letters" + " " + resData.wordlength;
+    })
 
-        let wordLength = "hint:" + " " + "number of letters" + " " + resData.wordlength;
-        let displayHint = document.createElement('p');
-        displayHint.innerHTML = wordLength;
-
-        hint.appendChild(displayHint);
-
+    socket.on('clear', () => {
+        clear();
     })
 
 })
 
+////////////////////-----p5.js-----////////////////////
 let socket;
 
 function setup() {
     let canvas = document.getElementById('drawing_canvas');
     let myCanvas = createCanvas(600, 600);
     myCanvas.parent(canvas);
-    
+
     socket = io('/respondent');
-    
-    socket.on('draw', function (obj) {
-        console.log(obj);
-        drawPos(obj);
-    });
+
+    //only when drawer clicked 'start' respondent can see the drawing
+    socket.on('clear', () => {
+        socket.on('draw', function (obj) {
+            console.log(obj);
+            drawPos(obj);
+        });
+    })
 
 }
 
-function drawPos(pos) {
-    fill(0, 0, 0);
-    ellipse(pos.x, pos.y, 10, 10);
+function drawPos(data) {
+    let pos = data.pos;
+    let color = data.fill;
+    let size = data.size;
+
+    console.log(color);
+
+    noStroke();
+    fill(color);
+    ellipse(pos.x, pos.y, size, size);
 }

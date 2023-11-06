@@ -46,6 +46,11 @@ drawer.on("connection", (socket) => {
     console.log(draw);
   })
 
+  socket.on('clear_canvas', (clear) => {
+    drawer.emit('clear', clear);
+    respondent.emit('clear', clear);
+  })
+
 })
 
 respondent.on("connection", (socket) => {

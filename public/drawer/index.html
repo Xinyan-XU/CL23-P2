@@ -10,22 +10,23 @@
 
 <body>
     <h1>Ready to Draw?</h1>
-    <div>
-        <div>
+    <div id="main_section">
+        <div id = "draw_section">
             <button id="get_words">GET WORDS</button>
-            <div id="drawing_word"></div>
-            <div class="hidden" id="get_color">
+            <div id="drawing_word">👆🏼 pick something to start</div>
+            <div id="get_color">
                 <div id="color_section">
                     <p>pick your drawing color: </p>
                     <div id="color_picker"></div>
                     <button id="eraser">eraser</button>
                 </div>
             </div>
-            <div>
+            <div id="start_button">
                 <button class="hidden" id="start">START</button>
+                <div class="hidden" id="start_word">👈🏼 click to start the game</div>
             </div>
             <div id="drawing_section">
-                <div class="hidden" id="drawing_canvas"></div>
+                <div id="drawing_canvas"></div>
             </div>
         </div>
         <div id="chat_section">
