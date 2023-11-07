@@ -1,3 +1,7 @@
+body{
+    background-color:green
+}
+
 #start_page{
     display: flex;
     flex-direction: row;

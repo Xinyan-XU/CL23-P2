@@ -59,17 +59,20 @@ drawer.on("connection", (socket) => {
   console.log("drawer socket connected: " + socket.id);
   updatePPL();
 
+  num = Math.floor(Math.random() * words.length);
+
   socket.on('getword', () => {
-    num = Math.floor(Math.random() * words.length);
 
     //server send draw word to drawer
     let drawData = { word: words[num].word }
     drawer.emit('word', drawData);
+    // respondent.emit('word', drawData);
 
     //server send draw word length to respondent
     let wordCount = words[num].word.split(' ').length;
     let resData = { wordlength: wordCount }
     respondent.emit('wordlength', resData);
+
   })
 
   socket.on('draw', (draw) => {
@@ -95,17 +98,23 @@ respondent.on("connection", (socket) => {
   chatPPL++
   updatePPL();
 
-  socket.on("msg", function (data) {
+  socket.on('msg', function (data) {
     console.log("Received a 'msg' event");
     console.log(data);
-    
-    respondent.emit("msg", data);
+
+    respondent.emit('msg', data);
+    drawer.emit('msg', data);
   });
 
   socket.on("disconnect", () => {
     console.log("chatroom socket disconneted: " + socket.id);
     chatPPL--;
     updatePPL();
+  });
+
+  socket.on('get_word', () => {
+    let resAnswer = { word: words[num].word }
+    respondent.emit('get_word', resAnswer);
   })
 })
 

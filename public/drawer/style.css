@@ -2,9 +2,16 @@
     display: none
 }
 
+.main {
+    display: flex;
+    justify-content: row;
+    ;
+    align-items: end
+}
+
 #drawing_canvas {
     border: 2px solid black;
-    width:605px;
+    width: 605px;
 }
 
 #color_section {
@@ -13,7 +20,7 @@
     align-items: center
 }
 
-#start_button{
+#start_button {
     display: flex;
     justify-content: row;
     align-items: center

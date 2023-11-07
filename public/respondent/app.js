@@ -23,36 +23,47 @@ window.addEventListener('load', () => {
 
     //////////////////////msg section
     ///-----receive socket msg-----/////
-  let chatBox = document.getElementById("chat-box-msgs");
+    let chatBox = document.getElementById("chat-box-msgs");
 
-  socket.on("msg", function (data) {
-    console.log("Message arrived");
-    console.log(data);
-    
-    let receivedMsg = data.name + ": " + data.msg;
-    let msgEl = document.createElement("p");
-    msgEl.innerHTML = receivedMsg;
-    
-    chatBox.appendChild(msgEl);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  });
+    let curMsg;
 
-  //////////------code to send socket message to the server------///////
-  let nameInput = document.getElementById('name-input');
-  let msgInput = document.getElementById("msg-input");
-  let sendButton = document.getElementById("send-button");
+    socket.on("msg", function (data) {
+        console.log("Message arrived");
+        console.log(data);
 
-  sendButton.addEventListener("click", function () {
-    let curName = nameInput.value;
-    let curMsg = msgInput.value;
-    let msgObj = { "name": curName, "msg": curMsg };
-    
-    if(curMsg === resData.word){
-      document.body.style.backgroundColor = 'red';
-    }
-    
-    socket.emit('msg', msgObj);
-  });
+        curMsg = data.msg;
+
+        let receivedMsg = data.name + ": " + data.msg;
+        let msgEl = document.createElement("p");
+        msgEl.innerHTML = receivedMsg;
+
+        chatBox.appendChild(msgEl);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        socket.on("get_word", (resAnswer) => {
+            console.log("answer checked");
+            if (curMsg.toLowerCase() == resAnswer.word.toLowerCase()) {
+                console.log("correct guess");
+                document.body.style.backgroundColor = 'red';
+            } else {
+                console.log("incorrect guess")
+            };
+        })
+    })
+
+    //////////------code to send socket message to the server------///////
+    let nameInput = document.getElementById('name-input');
+    let msgInput = document.getElementById("msg-input");
+    let sendButton = document.getElementById("send-button");
+
+    sendButton.addEventListener("click", function () {
+        let curName = nameInput.value;
+        let curMsg = msgInput.value;
+        let msgObj = { "name": curName, "msg": curMsg };
+
+        socket.emit('msg', msgObj);
+        socket.emit('get_word');
+    });
 
 })
 
@@ -73,7 +84,6 @@ function setup() {
             drawPos(obj);
         });
     })
-
 }
 
 function drawPos(data) {

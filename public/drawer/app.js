@@ -27,6 +27,11 @@ window.addEventListener('load', () => {
     socket.on('userCounts', (userCount) => {
         chatPPL.innerText = "Guesser: " + userCount.chatPPL;
     })
+
+    let msgInput = document.getElementById("msg-input");
+    socket.on('msg', (data) => {
+        msgInput.innerHTML = data.name + ":" + data.msg;
+    })
 })
 
 ////////////////////-----p5.js-----////////////////////
