@@ -10,6 +10,7 @@
 
 <body>
     <h1>WELCOME!!</h1>
+    <div id="reminder">PLAY WITH YOUR FRIENDS!</div>
     <div id="start_page">
         <div id="drawing_section">
             <button id="drawer">I AM AN ARTIST</button>
@@ -18,7 +19,12 @@
             <button id="chatroom">I AM A GOOD GUESSER</button>
         </div>
     </div>
-    <div id="reminder">PLAY WITH YOUR FRIENDS!</div>
+
+    <div>
+        <div>Number of Players in this game</div>
+        <div id="drawer_num">Drawer: 0</div>
+        <div id="guesser_num">Guesser: 0</div>
+    </div>
 
     <script src="app.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>

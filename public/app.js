@@ -12,14 +12,25 @@ window.addEventListener('load', () => {
         reminder.innerText = "the drawer position is occupied, you will be a good guesser!! 😎"
     })
 
-    document.getElementById('drawer').addEventListener('click', (click) => {
-        console.log("drawer button clicked");
-        click.disabled = true;
+    socket.on('userCounts', (userCount)=> {
+        let drawerNum = document.getElementById('drawer_num');
+        let guesserNum = document.getElementById('guesser_num');
+        drawerNum.innerHTML = "Drawer: " + userCount.draw / 2;
+        guesserNum.innerHTML = "Guesser: " + userCount.chat / 2;
 
+        if (userCount.draw / 2 == 1) {
+            let drawButton = document.getElementById('drawer');
+            drawButton.disabled = true;
+        }
+    });
+
+    socket.emit('getInitialUserCount');
+
+    document.getElementById('drawer').addEventListener('click', (click) => {
         socket.emit('drawButtonClicked');
         window.location.href = '/drawer';
     });
-    
+
     document.getElementById('chatroom').addEventListener('click', () => {
         window.location.href = '/respondent';
     })

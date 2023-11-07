@@ -24,13 +24,22 @@ window.addEventListener('load', () => {
     })
 
     let chatPPL = document.getElementById('chatPPL_num');
-    socket.on('userCounts', (userCount) => {
-        chatPPL.innerText = "Guesser: " + userCount.chatPPL;
+    socket.on('userCounts', (count) => {
+        if (count.chat / 2 !== 0) {
+            chatPPL.innerText = "Guesser: " + Math.floor(count.chat / 2);
+        }else{
+            chatPPL.innerText = "Waiting On Guess Participant..."
+        }
     })
 
-    let msgInput = document.getElementById("msg-input");
+    let chatBox = document.getElementById("chat-box-msgs");
     socket.on('msg', (data) => {
-        msgInput.innerHTML = data.name + ":" + data.msg;
+        let receivedMsg = data.name + ": " + data.msg;
+        let msgEl = document.createElement("p");
+        msgEl.innerHTML = receivedMsg;
+
+        chatBox.appendChild(msgEl);
+        chatBox.scrollTop = chatBox.scrollHeight;
     })
 })
 

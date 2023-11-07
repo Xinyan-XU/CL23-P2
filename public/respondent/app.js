@@ -17,14 +17,13 @@ window.addEventListener('load', () => {
     })
 
     let chatPPL = document.getElementById('chatPPL_num');
-    socket.on('userCounts', (num) => {
-        chatPPL.innerText = "Guesser: " + num;
+    socket.on('userCounts', (count) => {
+        chatPPL.innerText = "Guesser: " + count.chat/2;
     })
 
     //////////////////////msg section
     ///-----receive socket msg-----/////
     let chatBox = document.getElementById("chat-box-msgs");
-
     let curMsg;
 
     socket.on("msg", function (data) {

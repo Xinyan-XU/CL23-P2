@@ -41,9 +41,14 @@ let words = [
 
 io.on("connection", (socket) => {
   console.log("main page socket connected");
+  updatePPL();
 
   socket.on('drawButtonClicked', () => {
     io.emit('drawButtonDisable');
+  })
+
+  socket.on('getInitialUserCount',()=>{
+    updatePPL();
   })
 })
 
@@ -119,8 +124,9 @@ respondent.on("connection", (socket) => {
 })
 
 function updatePPL() {
-  let userCount = { drawPPL, chatPPL };
-  let count = JSON.stringify(userCount);
-  io.emit('userCounts', count);
-  console.log(count);
+  let userCount = { draw: drawPPL, chat: chatPPL };
+  io.emit('userCounts',userCount);
+  drawer.emit('userCounts', userCount);
+  respondent.emit('userCounts', userCount);
+  console.log(userCount);
 }
