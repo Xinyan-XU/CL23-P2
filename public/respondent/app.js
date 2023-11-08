@@ -6,26 +6,62 @@ window.addEventListener('load', () => {
 
     let socket = io('/respondent');
 
+    ////////////////////-----from drawer-----////////////////////
+    ////////////////////-----from drawer-----////////////////////
+    ////////////////////-----from drawer-----////////////////////
+    //getting words and clue when drawer started the game
     let hint = document.getElementById('word_hint')
     socket.on('wordlength', (resData) => {
-        //console.log(resData);
-        hint.innerText = "HINT: " + resData.wordlength + " words ";
+        hint.innerText = "HINT: idiom with " + resData.wordlength + " words ";
     })
 
+    //canvas clear when drawer clear the canvas
     socket.on('clear', () => {
         clear();
     })
 
+    //get hint & msgs when enter the game after game started
     let chatPPL = document.getElementById('chatPPL_num');
     socket.on('userCounts', (count) => {
-        chatPPL.innerText = "Guesser: " + count.chat/2;
-    })
+        if (count.chat / 2 == 1) {
+            chatPPL.innerText = "Hi, you are solo here!";
+        } else {
+            chatPPL.innerText = "Guesser: " + count.chat / 2;
+        }
+    });
 
-    //////////////////////msg section
-    ///-----receive socket msg-----/////
+    //**********not working as expected**********//
+    socket.emit('requestClick');
+    let hint2 = document.getElementById('word_hint2')
+    socket.on('startClicked', (bttnClicked) => {
+        console.log(bttnClicked);
+        if (bttnClicked !== 0) {
+            hint2.innerText = "Drawer has started the game! ";
+        } else {
+            hint2.innerText = "Waiting for the drawer to start...";
+        }
+    });
+
+    ////////////////////-----send msg section-----////////////////////
+    ////////////////////-----send msg section-----////////////////////
+    ////////////////////-----send msg section-----////////////////////
     let chatBox = document.getElementById("chat-box-msgs");
+    let nameInput = document.getElementById('name-input');
+    let msgInput = document.getElementById("msg-input");
+    let sendButton = document.getElementById("send-button");
     let curMsg;
 
+    //send msg from server and show in the chatbox & request answer
+    sendButton.addEventListener("click", function () {
+        let curName = nameInput.value;
+        let curMsg = msgInput.value;
+        let msgObj = { "name": curName, "msg": curMsg };
+
+        socket.emit('msg', msgObj);
+        socket.emit('get_word');
+    });
+
+    //receive msg from server and show in the chatbox
     socket.on("msg", function (data) {
         console.log("Message arrived");
         console.log(data);
@@ -39,33 +75,28 @@ window.addEventListener('load', () => {
         chatBox.appendChild(msgEl);
         chatBox.scrollTop = chatBox.scrollHeight;
 
+        //check answers after receive chatbox msg
         socket.on("get_word", (resAnswer) => {
             console.log("answer checked");
             if (curMsg.toLowerCase() == resAnswer.word.toLowerCase()) {
                 console.log("correct guess");
+                hint2.innerText = data.name + " has guessed the words correctly!!!!";
                 document.body.style.backgroundColor = 'red';
+
+            //     //confetti code
+            //   const jsConfetti = new JSConfetti();
+            //   jsConfetti.addConfetti()
+
             } else {
                 console.log("incorrect guess")
             };
         })
     })
 
-    //////////------code to send socket message to the server------///////
-    let nameInput = document.getElementById('name-input');
-    let msgInput = document.getElementById("msg-input");
-    let sendButton = document.getElementById("send-button");
-
-    sendButton.addEventListener("click", function () {
-        let curName = nameInput.value;
-        let curMsg = msgInput.value;
-        let msgObj = { "name": curName, "msg": curMsg };
-
-        socket.emit('msg', msgObj);
-        socket.emit('get_word');
-    });
-
 })
 
+////////////////////-----p5.js-----////////////////////
+////////////////////-----p5.js-----////////////////////
 ////////////////////-----p5.js-----////////////////////
 let socket;
 
@@ -76,13 +107,10 @@ function setup() {
 
     socket = io('/respondent');
 
-    //only when drawer clicked 'start' respondent can see the drawing
-    socket.on('clear', () => {
-        socket.on('draw', function (obj) {
-            console.log(obj);
-            drawPos(obj);
-        });
-    })
+    socket.on('draw', function (obj) {
+        console.log(obj);
+        drawPos(obj);
+    });
 }
 
 function drawPos(data) {

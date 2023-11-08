@@ -5,26 +5,24 @@ window.addEventListener('load', () => {
         console.log("Connected");
     });
 
-    socket.on('drawButtonDisable', () => {
-        let drawButton = document.getElementById('drawer');
-        drawButton.disabled = true;
-        let reminder = document.getElementById('reminder');
-        reminder.innerText = "the drawer position is occupied, you will be a good guesser!! 😎"
-    })
-
-    socket.on('userCounts', (userCount)=> {
-        let drawerNum = document.getElementById('drawer_num');
-        let guesserNum = document.getElementById('guesser_num');
+    let reminder = document.getElementById('reminder_occupy');
+    let drawButton = document.getElementById('drawer');
+    let drawerNum = document.getElementById('drawer_num');
+    let guesserNum = document.getElementById('guesser_num');
+    socket.on('userCounts', (userCount) => {
         drawerNum.innerHTML = "Drawer: " + userCount.draw / 2;
         guesserNum.innerHTML = "Guesser: " + userCount.chat / 2;
 
         if (userCount.draw / 2 == 1) {
-            let drawButton = document.getElementById('drawer');
             drawButton.disabled = true;
+            reminder.innerText = "the drawer position is occupied, you will be a good guesser!! 😎"
         }
     });
 
     socket.emit('getInitialUserCount');
+    socket.on('requestClick', () => {
+        socket.emit('startClicked');
+    })
 
     document.getElementById('drawer').addEventListener('click', (click) => {
         socket.emit('drawButtonClicked');

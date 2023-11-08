@@ -5,14 +5,10 @@ window.addEventListener('load', () => {
     document.getElementById('back2_main').addEventListener('click', () => {
         window.location.href = '/';
     })
+
     let getWords = document.getElementById('get_words');
     getWords.addEventListener('click', () => {
-        let start = document.getElementById('start');
-        let startText = document.getElementById('start_word');
-        start.classList.remove('hidden');
-        startText.classList.remove('hidden');
         getWords.innerHTML = "CHANGE WORDS";
-        start.innerText = 'START';
 
         socket.emit('getword');
     })
@@ -26,9 +22,11 @@ window.addEventListener('load', () => {
     let chatPPL = document.getElementById('chatPPL_num');
     socket.on('userCounts', (count) => {
         if (count.chat / 2 !== 0) {
-            chatPPL.innerText = "Guesser: " + Math.floor(count.chat / 2);
-        }else{
+            chatPPL.innerText = "Guesser: " + count.chat / 2;
+            getWords.disabled = false;
+        } else {
             chatPPL.innerText = "Waiting On Guess Participant..."
+            getWords.disabled = true;
         }
     })
 
@@ -75,12 +73,9 @@ function setup() {
     })
 
     let start = document.getElementById('start');
-    let startText = document.getElementById('start_word');
     start.addEventListener('click', () => {
         buttonClicked = true;
         socket.emit('clear_canvas');
-        start.innerText = 'CLEAR';
-        startText.innerText = ' 👈🏼 click to clear the canvas'
     })
 
     socket.on('clear', () => {
