@@ -2,39 +2,52 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Mina&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css" />
     <title>RESPONDENT</title>
 </head>
 
 <body>
     <h1>Ready to Guess?</h1>
-    <h2 id="chatPPL_num"></h2>
+    <h2 class="container_2" id="chatPPL_num"></h2>
+    <div class="container_2" id="word_hint2"></div>
     <div class="main" id="main_section">
-        <div id="drawing_section">
-            <div id="word_hint">Waiting for drawer to start...</div>
-            <div id="word_hint2"></div>
-            <div id="drawing_canvas"></div>
+        <div class="container" id="drawing_section">
+            <div class="item" id="word_hint">Waiting For Drawer to Start...</div>
+            <div class="item" id="drawing_canvas"></div>
         </div>
-        <div id="chat_section">
-            <div id="chat-box-msgs">CHAT BOX MSG:</div>
-            <div class="chat-input">
-                <input type="text" class="chat-input" id="name-input" placeholder="Name" />
-                <input type="text" class="chat-input" id="msg-input" placeholder="Message" />
-                <button id="send-button">Send</button>
+        <div class="container" id="chat_section">
+            <div class="item" id="chat-box-msgs">👇 CHAT BOX SEND MSG 👇</div>
+            <div class="chat-input item">
+                <input type="text" id="name-input" placeholder="ID" />
+                <input type="text" id="msg-input" placeholder="YOUR GUESS" />
+                <button class="btn btn-2" id="send-button">SEND</button>
             </div>
         </div>
     </div>
-
-    <div>
-        <button id="back2_main">Home Page</button>
+    <div class="container_2">
+        <button class="btn btn-2" id="back2_main">BACK TO HOME PAGE</button>
     </div>
 
+    <audio id="SuccessSound" src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3"
+        preload="auto"></audio>
+
     <script src="app.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script> -->
 </body>
 
 </html>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script> -->

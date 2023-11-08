@@ -1,27 +1,129 @@
-.hidden {
-    display: none
-}
-
-.main {
-    display: flex;
-    justify-content: row;
-    ;
-    align-items: end
-}
-
-#drawing_canvas {
+body {
+    margin: 8%;
+    font-family: "Mina", sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    font-family: "Gochi Hand", cursive;
+    font-size: 60px;
+  }
+  
+  h2{
+    font-size: 25px;
+  }
+  
+  #drawing_canvas {
     border: 2px solid black;
     width: 605px;
-}
-
-#color_section {
+  }
+  
+  #chat_section{
+    width: 400px;
+    border-bottom: 2px solid #1d1d1d;
+    margin-buttom:20px;
+  }
+  
+  #color_section {
     display: flex;
     justify-content: row;
-    align-items: center
-}
-
-#start_button {
+    align-items: center;
+  }
+  
+  #get_word_2start {
     display: flex;
     justify-content: row;
-    align-items: center
-}
+    align-items: center;
+  }
+  
+  #start_button {
+    display: flex;
+    justify-content: row;
+    align-items: center;
+  }
+  
+  #color_picker {
+    margin-left: 0.5vw;
+  }
+  
+  #chat-box-msgs {
+    height: 600px; 
+    width: 400px;
+    overflow-y: auto; 
+  }
+  
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+  }
+  
+  .drawing_canvas {
+    border: solid 1px black;
+  }
+  
+  .container,
+  .container_2{
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    row-gap: 10px;
+    column-gap: 10px;
+    margin: 10px;
+  }
+  
+  .container_2{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 25px;
+  }
+  
+  button {
+    margin: 10px;
+  }
+  
+  .btn {
+    width: max-content;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: "Dosis", sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+    font-size: 15px;
+  }
+  
+  .btn-2 {
+    background: #fcba03;
+    background: linear-gradient(0deg, #fcba03 0%, #fc9403 100%);
+    border: none;
+  }
+  
+  .btn-2:before {
+    height: 0%;
+    width: 2px;
+  }
+  
+  .btn-2:hover {
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.5),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.5),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.2),
+      inset 4px 4px 6px 0 rgba(0, 0, 0, 0.4);
+  }
+  
+  .drawing_word {
+    font-size: 30px;
+  }
+  

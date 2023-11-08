@@ -1,5 +1,5 @@
 //Initialize the express 'app' object
-let express = require('express');
+let express = require("express");
 let app = express();
 // app.use(express.json());
 app.use("/", express.static("public"));
@@ -24,7 +24,7 @@ let words = [
   { word: "Time Files" },
   { word: "Under the Weather" },
   { word: "Bite the Bullet" },
-  { word: "Butterfilies in My Stomach" },
+  { word: "Butterflies in My Stomach" },
   { word: "Get Cold Feet" },
   { word: "Hold Your Horses" },
   { word: "In the Dog House" },
@@ -38,7 +38,7 @@ let words = [
   { word: "Bite the Bullet" },
   { word: "Rain Cats and Dogs" },
   { word: "The Apple of My Eye" },
-]
+];
 
 ////////////////////-----welcome page-----////////////////////
 ////////////////////-----welcome page-----////////////////////
@@ -46,111 +46,100 @@ let words = [
 io.on("connection", (socket) => {
   console.log("main page socket connected");
   updatePPL();
-  startClicked()
 
   ////////update user count on both pgs
-  socket.on('getInitialUserCount', () => {
+  socket.on("getInitialUserCount", () => {
     updatePPL();
-    startClicked();
-  })
-})
+  });
+});
 
-let drawer = io.of('/drawer');
-let respondent = io.of('/respondent');
+let drawer = io.of("/drawer");
+let respondent = io.of("/respondent");
 let num = 0;
 let chatPPL = 0;
 let drawPPL = 0;
-let click = 0;
 
 ////////////////////-----drawer page-----////////////////////
 ////////////////////-----drawer page-----////////////////////
 ////////////////////-----drawer page-----////////////////////
 drawer.on("connection", (socket) => {
+  console.log("drawer socket connected: " + socket.id);
+
   ///////drawer page number count ++
   drawPPL++;
-  console.log("drawer socket connected: " + socket.id);
   updatePPL();
 
   ///////when drawer click get_word bttn
-  socket.on('getword', () => {
-    click++;
-    startClicked();
-
+  socket.on("getword", () => {
     num = Math.floor(Math.random() * words.length);
     //server send draw word to drawer
-    let drawData = { word: words[num].word }
-    drawer.emit('word', drawData);
+    let drawData = { word: words[num].word };
+    drawer.emit("word", drawData);
 
     //server send draw word length to respondent
-    let wordCount = words[num].word.split(' ').length;
-    let resData = { wordlength: wordCount }
-    respondent.emit('wordlength', resData);
-  })
+    let wordCount = words[num].word.split(" ").length;
+    let resData = { wordlength: wordCount };
+    respondent.emit("wordlength", resData);
+  });
 
   ///////p5 canvas
-  socket.on('draw', (draw) => {
-    drawer.emit('draw', draw);
-    respondent.emit('draw', draw);
+  socket.on("draw", (draw) => {
+    drawer.emit("draw", draw);
+    respondent.emit("draw", draw);
     console.log(draw);
-  })
+  });
 
   ////////when drawer click on clear canvas bttn
-  socket.on('clear_canvas', (clear) => {
-    drawer.emit('clear', clear);
-    respondent.emit('clear', clear);
-  })
+  socket.on("clear_canvas", (clear) => {
+    drawer.emit("clear", clear);
+    respondent.emit("clear", clear);
+  });
 
-  ///////drawer page number count --
   socket.on("disconnect", () => {
+    console.log("drawer socket disconneted: " + socket.id);
+    ///////drawer page number count --
     drawPPL--;
     updatePPL();
-  })
-})
+  });
+});
 
 ////////////////////-----respondent page-----////////////////////
 ////////////////////-----respondent page-----////////////////////
 ////////////////////-----respondent page-----////////////////////
 respondent.on("connection", (socket) => {
-  ///////response page number count ++
   console.log("chatroom socket connected: " + socket.id);
-  chatPPL++
+  ///////response page number count ++
+  chatPPL++;
   updatePPL();
 
   //recived msg in respondent chatbox
-  socket.on('msg', function (data) {
+  socket.on("msg", function (data) {
     console.log("Received a 'msg' event");
     console.log(data);
-    //send to both pg 
-    respondent.emit('msg', data);
-    drawer.emit('msg', data);
+    //send to both pg
+    respondent.emit("msg", data);
+    drawer.emit("msg", data);
   });
 
-  //send words to respondant page for answer check when chatbox msg send 
-  socket.on('get_word', () => {
-    let resAnswer = { word: words[num].word }
-    respondent.emit('get_word', resAnswer);
-  })
+  //send words to respondant page for answer check when chatbox msg send
+  socket.on("get_word", () => {
+    let resAnswer = { word: words[num].word };
+    respondent.emit("get_word", resAnswer);
+  });
 
-  ///////drawer page number count --
   socket.on("disconnect", () => {
     console.log("chatroom socket disconneted: " + socket.id);
+    ///////drawer page number count --
     chatPPL--;
     updatePPL();
   });
-})
+});
 
 //user count function
 function updatePPL() {
   let userCount = { draw: drawPPL, chat: chatPPL };
-  io.emit('userCounts', userCount);
-  drawer.emit('userCounts', userCount);
-  respondent.emit('userCounts', userCount);
+  io.emit("userCounts", userCount);
+  drawer.emit("userCounts", userCount);
+  respondent.emit("userCounts", userCount);
   console.log(userCount);
 }
-
-function startClicked() {
-  let bttnClicked = click;
-  console.log(bttnClicked);
-  io.emit('startClicked', bttnClicked);
-  respondent.emit('startClicked', bttnClicked);
-} 

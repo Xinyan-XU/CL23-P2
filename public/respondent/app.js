@@ -1,64 +1,63 @@
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
+    document.getElementById("back2_main").addEventListener("click", () => {
+        window.location.href = "/";
+    });
 
-    document.getElementById('back2_main').addEventListener('click', () => {
-        window.location.href = '/';
-    })
-
-    let socket = io('/respondent');
+    let socket = io("/respondent");
 
     ////////////////////-----from drawer-----////////////////////
     ////////////////////-----from drawer-----////////////////////
     ////////////////////-----from drawer-----////////////////////
     //getting words and clue when drawer started the game
-    let hint = document.getElementById('word_hint')
-    socket.on('wordlength', (resData) => {
-        hint.innerText = "HINT: idiom with " + resData.wordlength + " words ";
-    })
+    let hint = document.getElementById("word_hint");
+    socket.on("wordlength", (resData) => {
+        //console.log(resData);
+        hint.innerText =
+            "The Drawer Has Started the Game! " +
+            "HINT: Idiom " +
+            resData.wordlength +
+            " Words ";
+        hint2.innerText = "";
+    });
 
     //canvas clear when drawer clear the canvas
-    socket.on('clear', () => {
+    socket.on("clear", () => {
         clear();
-    })
+    });
 
     //get hint & msgs when enter the game after game started
-    let chatPPL = document.getElementById('chatPPL_num');
-    socket.on('userCounts', (count) => {
+    let chatPPL = document.getElementById("chatPPL_num");
+    socket.on("userCounts", (count) => {
         if (count.chat / 2 == 1) {
-            chatPPL.innerText = "Hi, you are solo here!";
+            chatPPL.innerText =
+                "Hi, you are doing a solo guess. Don't worry, there will be a hint. 😉";
         } else {
-            chatPPL.innerText = "Guesser: " + count.chat / 2;
+            chatPPL.innerText =
+                "You are with " + (count.chat - 2) / 2 + " other Guesser(s)";
         }
     });
 
-    //**********not working as expected**********//
-    socket.emit('requestClick');
-    let hint2 = document.getElementById('word_hint2')
-    socket.on('startClicked', (bttnClicked) => {
-        console.log(bttnClicked);
-        if (bttnClicked !== 0) {
-            hint2.innerText = "Drawer has started the game! ";
-        } else {
-            hint2.innerText = "Waiting for the drawer to start...";
-        }
-    });
-
-    ////////////////////-----send msg section-----////////////////////
-    ////////////////////-----send msg section-----////////////////////
-    ////////////////////-----send msg section-----////////////////////
+    ////////////////////-----msg section-----////////////////////
+    ////////////////////-----msg section-----////////////////////
+    ////////////////////-----msg section-----////////////////////
     let chatBox = document.getElementById("chat-box-msgs");
-    let nameInput = document.getElementById('name-input');
+    let nameInput = document.getElementById("name-input");
     let msgInput = document.getElementById("msg-input");
     let sendButton = document.getElementById("send-button");
+    let hint2 = document.getElementById("word_hint2");
     let curMsg;
 
     //send msg from server and show in the chatbox & request answer
     sendButton.addEventListener("click", function () {
         let curName = nameInput.value;
         let curMsg = msgInput.value;
-        let msgObj = { "name": curName, "msg": curMsg };
+        let msgObj = { name: curName, msg: curMsg };
 
-        socket.emit('msg', msgObj);
-        socket.emit('get_word');
+        if (nameInput.value.trim() !== "" && msgInput.value !== "") {
+            socket.emit("msg", msgObj);
+            socket.emit("get_word");
+        }
+        msgInput.value = "";
     });
 
     //receive msg from server and show in the chatbox
@@ -80,21 +79,27 @@ window.addEventListener('load', () => {
             console.log("answer checked");
             if (curMsg.toLowerCase() == resAnswer.word.toLowerCase()) {
                 console.log("correct guess");
-                hint2.innerText = data.name + " has Guessed Correctly!!!! Wait for Drawer to Get New Words.";
-                saveCanvas(canvas, 'myCanvas', 'png');
-                document.body.style.backgroundColor = 'red';
+                hint2.innerText =
+                    data.name +
+                    " has Guessed Correctly!!!! Waiting for Drawer to Get New Words...";
+                //saveCanvas(canvas, "myCanvas", "png");
 
-            //     //confetti code
-            //   const jsConfetti = new JSConfetti();
-            //   jsConfetti.addConfetti()
+                //confetti code
+                const jsConfetti = new JSConfetti();
+                jsConfetti.addConfetti();
 
+                //music
+                //music
+                const SuccessSound = new Audio(
+                    "https://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3"
+                );
+                SuccessSound.play();
             } else {
-                console.log("incorrect guess")
-            };
-        })
-    })
-
-})
+                console.log("incorrect guess");
+            }
+        });
+    });
+});
 
 ////////////////////-----p5.js-----////////////////////
 ////////////////////-----p5.js-----////////////////////
@@ -102,13 +107,13 @@ window.addEventListener('load', () => {
 let socket;
 
 function setup() {
-    let canvas = document.getElementById('drawing_canvas');
+    let canvas = document.getElementById("drawing_canvas");
     let myCanvas = createCanvas(600, 600);
     myCanvas.parent(canvas);
 
-    socket = io('/respondent');
+    socket = io("/respondent");
 
-    socket.on('draw', function (obj) {
+    socket.on("draw", function (obj) {
         console.log(obj);
         drawPos(obj);
     });

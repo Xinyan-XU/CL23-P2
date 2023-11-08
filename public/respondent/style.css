@@ -1,10 +1,113 @@
-.main {
-    display: flex;
-    justify-content: row;
-    align-items: end
-}
-
-#drawing_canvas {
+body {
+    margin: 8%;
+    font-family: "Mina", sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    font-family: "Gochi Hand", cursive;
+    font-size: 60px;
+  }
+  
+  h2{
+    font-size: 25px;
+  }
+  
+  #drawing_canvas {
     border: 2px solid black;
     width: 605px;
-}
+  }
+  
+  #chat-box-msgs {
+    height: 540px; 
+    width: 400px;
+    overflow-y: auto; 
+  }
+  
+  #chat_section{
+    width: 400px;
+    border-bottom: 2px solid #1d1d1d;
+    margin-buttom:20px;
+  }
+  
+  #name-input{
+    width:50px;
+    height:30px;
+    text-align: center;
+    font-family: "Mina", sans-serif;
+  }
+  
+  #msg-input{
+    width:220px;
+    height:30px;
+    text-align: center;
+    font-family: "Mina", sans-serif;
+  }
+  
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+  }
+  
+  .container,
+  .container_2{
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    row-gap: 10px;
+    column-gap: 10px;
+    margin:10px;
+  }
+  
+  .container_2{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 25px;
+  }
+  
+  button {
+    margin: 10px;
+  }
+  
+  .btn {
+    width: max-content;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: "Dosis", sans-serif;
+    font-weight: 800;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+    font-size: 15px;
+  }
+  
+  .btn-2 {
+    background: #fcba03;
+    background: linear-gradient(0deg, #fcba03 0%, #fc9403 100%);
+    border: none;
+  }
+  
+  .btn-2:before {
+    height: 0%;
+    width: 2px;
+  }
+  
+  .btn-2:hover {
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.5),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.5),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.2),
+      inset 4px 4px 6px 0 rgba(0, 0, 0, 0.4);
+  }
+  
