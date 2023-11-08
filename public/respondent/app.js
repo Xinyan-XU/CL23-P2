@@ -80,7 +80,8 @@ window.addEventListener('load', () => {
             console.log("answer checked");
             if (curMsg.toLowerCase() == resAnswer.word.toLowerCase()) {
                 console.log("correct guess");
-                hint2.innerText = data.name + " has guessed the words correctly!!!!";
+                hint2.innerText = data.name + " has Guessed Correctly!!!! Wait for Drawer to Get New Words.";
+                saveCanvas(canvas, 'myCanvas', 'png');
                 document.body.style.backgroundColor = 'red';
 
             //     //confetti code

@@ -6,6 +6,11 @@ window.addEventListener('load', () => {
         window.location.href = '/';
     })
 
+    ////////////////////-----drawing words section-----////////////////////
+    ////////////////////-----drawing words section-----////////////////////
+    ////////////////////-----drawing words section-----////////////////////
+    let drawWords;
+
     let getWords = document.getElementById('get_words');
     getWords.addEventListener('click', () => {
         getWords.innerHTML = "CHANGE WORDS";
@@ -15,8 +20,8 @@ window.addEventListener('load', () => {
 
     let word = document.getElementById('drawing_word');
     socket.on('word', (drawData) => {
-        //console.log(drawData);
-        word.innerText = "The words to draw is: " + drawData.word;
+        drawWords = drawData.word;
+        word.innerText = "Words to Draw: " + drawWords;
     })
 
     let chatPPL = document.getElementById('chatPPL_num');
@@ -30,17 +35,46 @@ window.addEventListener('load', () => {
         }
     })
 
+    ////////////////////-----received msg section-----////////////////////
+    ////////////////////-----received msg section-----////////////////////
+    ////////////////////-----received msg section-----////////////////////
     let chatBox = document.getElementById("chat-box-msgs");
-    socket.on('msg', (data) => {
-        let receivedMsg = data.name + ": " + data.msg;
-        let msgEl = document.createElement("p");
-        msgEl.innerHTML = receivedMsg;
+    let hint2 = document.getElementById('word_hint2');
 
-        chatBox.appendChild(msgEl);
+    socket.on('msg', (data) => {
+        let receivedMsg = data.msg;
+        let receivedWord = drawWords;
+
+        let receivedMsgLower = receivedMsg.toLowerCase();
+        let receivedWordLower = receivedWord.toLowerCase();
+
+        let receivedMsgEl = document.createElement("p");
+        receivedMsgEl.innerHTML = data.name + ": " + receivedMsg;
+
+        chatBox.appendChild(receivedMsgEl);
         chatBox.scrollTop = chatBox.scrollHeight;
-    })
+
+        if (receivedMsgLower === receivedWordLower) {
+            console.log("Correct guess");
+            hint2.innerText = data.name + " has Guessed Correctly!!!! Auto Restart in 6 Seconds.";
+            document.body.style.backgroundColor = 'red';
+            saveCanvas(canvas, 'myCanvas', 'png');
+            setTimeout(() => {
+                clear();
+            }, 6000);
+            getWords.innerHTML = "GET NEW WORDS";
+            //confetti code
+            //const jsConfetti = new JSConfetti();
+            //jsConfetti.addConfetti()
+        } else {
+            console.log("incorrect guess")
+        }
+    });
+
 })
 
+////////////////////-----p5.js-----////////////////////
+////////////////////-----p5.js-----////////////////////
 ////////////////////-----p5.js-----////////////////////
 let socket;
 let p5ColorPicker;
