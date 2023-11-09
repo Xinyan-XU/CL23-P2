@@ -25,7 +25,10 @@ window.addEventListener("load", () => {
         clear();
     });
 
+    //not working
     //get hint & msgs when enter the game after game started
+
+    //user count notification
     let chatPPL = document.getElementById("chatPPL_num");
     socket.on("userCounts", (count) => {
         if (count.chat / 2 == 1) {
