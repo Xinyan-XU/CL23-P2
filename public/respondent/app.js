@@ -92,7 +92,6 @@ window.addEventListener("load", () => {
                 jsConfetti.addConfetti();
 
                 //music
-                //music
                 const SuccessSound = new Audio(
                     "https://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3"
                 );
